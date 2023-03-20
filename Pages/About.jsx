@@ -16,7 +16,7 @@ const profile = [
   { state:"Manage your Security options", name: "Security" },
   { state:"Supporting copy here", name: "Notifications" },
   { state:"Make money by refering", name: "Refer a friend " },
-  { state:"Contact us", name: "Support " },
+  { state:"Logout from your account", name: "Logout" },
 ];
 
 
@@ -39,7 +39,7 @@ const About = ({ navigation }) => {
           </View>
           <View style={styles.gridbx}>
           {data.map((user) => (
-          <View style={styles.fbox}>
+          <View style={styles.fbox} >
          <Text style={styles.titlebar1}>{user.name}</Text>
          <Text style={styles.titlebar2}>{user.value}</Text>
          </View>
@@ -49,7 +49,7 @@ const About = ({ navigation }) => {
           <Text style={styles.parabar}>User bio text goes here User bio  bio text goes here User bio text goes here User bio text goes here User bio text goes here User bio text goes here User bio text goes here User bio text goes here User bio text goes here</Text>
          </View>
          {profile.map((prop) => (
-         <TouchableOpacity style={styles.card}>
+         <TouchableOpacity style={styles.card} onPress={() =>{ prop.name == "Logout" ?(navigation.navigate("Login")):(prop.name == "My Cart"?(navigation.navigate("Cart")):null)}} >
           <View style={styles.imagecont2}>
           <Image style={{width:"100%",height:"100%"}}
                  source={{ uri:`https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg`}}
@@ -79,7 +79,8 @@ const styles = StyleSheet.create({
     width:"100%",
     height:"100%",
     marginTop:20,
-    padding:20
+    padding:20,
+    marginBottom:10
   },
   backbox:{
     display:"flex",

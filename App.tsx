@@ -29,6 +29,7 @@ import Home from './Pages/Home';
 import Profile from './Pages/Profile';
 import About from './Pages/About';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import Cart from './Pages/Cart';
 import Navbar from './Components/navbar';
 import MainPage from './Pages/MainPage';
 import BuyPage from './Pages/BuyPage';
@@ -109,6 +110,13 @@ function App(): JSX.Element {
         <Stack.Screen
           name="CameraMain"
           component={CameraMain}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Cart"
+          component={Cart}
           options={{
             headerShown: false,
           }}
