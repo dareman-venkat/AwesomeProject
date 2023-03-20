@@ -15,6 +15,7 @@ import React from 'react';
 import {LinearGradient} from 'react-native-linear-gradient';
 import {LinearTextGradient} from 'react-native-text-gradient';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
+import { Svg,Defs,Rect,Mask } from 'react-native-svg';
 import { useState } from 'react';
 const CameraMain = ({navigation}) => {
 
@@ -34,7 +35,7 @@ const[open,setopen]=useState(false);
   }, []);
 
   function renderCamera() {
-    if (device != null && open == true) {
+    if (device != null ) {
       return (
         <View
           style={{
@@ -49,13 +50,15 @@ const[open,setopen]=useState(false);
               flex: 1,
             }}
             device={device}
-            photo={}
+            photo={true}
             isActive={true}
             enableZoomGesture
           />
+          {Cameraoverlay()}
         </View>
       );
-    } else {
+    } 
+    else {
       return (
 
 <View
@@ -65,6 +68,71 @@ style={{
 />
       );
     }
+  }
+
+  function Cameraframe() {
+   
+    return(
+
+         <Svg
+         width="100%"
+         height="100%"
+         >
+             <Defs>
+                  <Mask
+                   id="mask"
+                   x="0"
+                   y="0"
+                   height="100%"
+                   width="100%"
+                   >
+                      <Rect height="100%" width="100%" fill="#fff" />
+                      <Rect
+                      x="18%"
+                      y="20%"
+                      width="250"
+                      height="250"
+                      fill="black"
+                      />
+                  </Mask>
+             </Defs>
+             <Rect
+               height="100%"
+               width="100%"
+               fill="rgba(0,0,0,0.8)"
+               mask="url(#mask)"
+             />
+             <Rect
+              x="18%"
+              y="20%"
+              width="250"
+              height="250"
+              strokeWidth="5"
+              stroke="#fff"
+              fill="rgba(0,0,0,0.2)"
+             />
+         </Svg>
+    )
+  }
+
+  function Cameraoverlay(){
+
+return(
+
+
+  <View
+      style={{
+        position:"absolute",
+        top:0,
+        left:0,
+        right:0,
+        bottom:0,
+      }}
+      >
+    <Cameraframe/>
+  </View>
+)
+
   }
 
   return (
