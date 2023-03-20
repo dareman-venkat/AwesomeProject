@@ -28,6 +28,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import Home from './Pages/Home';
 import Profile from './Pages/Profile';
 import About from './Pages/About';
+import Cart from './Pages/Cart';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Navbar from './Components/navbar';
 import MainPage from'./Pages/MainPage';
@@ -96,6 +97,12 @@ function App(): JSX.Element {
        />
           <Stack.Screen name="Signup" 
        component={Signup}
+       options={{
+        headerShown:false
+      }}
+       />
+        <Stack.Screen name="Cart" 
+       component={Cart}
        options={{
         headerShown:false
       }}
