@@ -2,6 +2,9 @@ import { View, Text , Alert,StyleSheet,Image,ScrollView,Pressable,TouchableOpaci
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Svg,Defs,Rect,Mask } from 'react-native-svg';
+import {Camera, useCameraDevices} from 'react-native-vision-camera';
+import { useState, useRef } from 'react';
 import MainPage from './MainPage';
 import Check from '../Pages/Check'
 const data = [
@@ -21,19 +24,151 @@ const profile = [
 
 
 const About = ({ navigation }) => {
+
+  const[open,setopen]=useState(false);
+
+  React.useEffect(() => {
+    requestCameraPermission();
+  }, []);
+  const camera = useRef(null)
+  const devices = useCameraDevices();
+  const device = devices.back;
+
+  const requestCameraPermission = React.useCallback(async () => {
+    const permission = await Camera.requestCameraPermission();
+
+    if ((permission = 'denied')) await Linking.openSettings();
+  }, []);
+
+  
+  const capturephoto = async() =>{
+    console.log("entered ____>>>>")
+      const photo = await camera.current.takePhoto({
+        //enableAutoStabilization: true,
+        skipMetadata: true,
+        //photoCodec: 'jpeg',
+        quality: 85,
+      })
+      //console.log("camer worked",photo)
+  }
+
+  function renderCamera() {
+    if (device != null ) {
+      return (
+        <View
+          style={{
+            flex: 1,
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            zIndex: 1,
+          }}>
+          <Camera
+           style={{flex:1}}
+            ref={camera}
+            device={device}
+            photo={true}
+            isActive={true}
+            enableZoomGesture
+          />
+          {Cameraoverlay()}
+          <TouchableOpacity onPress={capturephoto} style={styles.capture}/>
+
+        </View>
+        
+      );
+    } 
+    else {
+      return (
+
+<View
+style={{
+  flex: 1,
+}}
+/>
+      );
+    }
+  }
+
+  function Cameraframe() {
+   
+    return(
+
+         <Svg
+         width="100%"
+         height="100%"
+         >
+             <Defs>
+                  <Mask
+                   id="mask"
+                   x="0"
+                   y="0"
+                   height="100%"
+                   width="100%"
+                   >
+                      <Rect height="100%" width="100%" fill="#fff" />
+                      <Rect
+                      x="16%"
+                      y="25%"
+                      width="250"
+                      height="250"
+                      fill="black"
+                      />
+                  </Mask>
+             </Defs>
+             <Rect
+               height="100%"
+               width="100%"
+               fill="rgba(0,0,0,0.7)"
+               mask="url(#mask)"
+             />
+             <Rect
+              x="16%"
+              y="25%"
+              width="250"
+              height="250"
+              strokeWidth="5"
+              stroke="#fff"
+              fill="rgba(0,0,0,0.2)"
+             />
+         </Svg>
+    )
+  }
+
+      function Cameraoverlay(){
+
+        return(
+
+
+          <View
+          style={{
+            position:"absolute",
+            top:0,
+            left:0,
+            right:0,
+            bottom:0,
+          }}
+          >
+            <Cameraframe/>
+         </View>
+          )
+
+      }
   
   return (
     <View style={styles.mainbody}>
+      {open && renderCamera()} 
         <ScrollView style={styles.subbody}>
-          <TouchableOpacity style={styles.backbox}>
-              <TouchableOpacity onPress={() => navigation.navigate("Mainpage")}>
+          <TouchableOpacity onPress={() => navigation.navigate("Mainpage")} style={styles.backbox}> 
                 <Image source={require("../assests/back.png")} />
-              </TouchableOpacity>
           </TouchableOpacity>
-          <View style={styles.profilebox}>
+          <View style={styles.profilebox}>  
+               <View style={styles.coverbox}>
                   <View style={styles.imagecont}>
-                    <Image style={styles.img} source={require("../assests/beard.png")} />
+                    <Image style={styles.img} source={require("../assests/beard.png")}/>
                   </View>
+                  <TouchableOpacity onPress={() => setopen(true)} style={styles.edit}><Image style={{height:32,width:32}} source={require("../assests/cameraadd.png")}/></TouchableOpacity>
+                  </View> 
                   <Text style={styles.titlebar}>Jeff Beszoz</Text>
                   <Text style={styles.subTitlebar}>Update Photo</Text>
           </View>
@@ -87,8 +222,7 @@ const styles = StyleSheet.create({
     width:"100%",
     justifyContent:"flex-start",
     paddingLeft:8,
-    height:180,
-    zIndex:1
+    height:180
   },
   profilebox:{
     display:"flex",
@@ -108,7 +242,7 @@ const styles = StyleSheet.create({
     //marginRight:"auto",
     alignItems:"center",
     justifyContent:"center",
-    marginBottom:10
+    marginBottom:10,
   },
   img:{
     position:"absolute",
@@ -212,6 +346,28 @@ const styles = StyleSheet.create({
     //flexWrap:"wrap",
     //fontWeight:350,
   },
+  coverbox:{
+    position:"relative"
+  },
+  edit:{
+    position:"absolute",
+    bottom:0,
+    right:0,
+    marginBottom:15,
+    zIndex:0
+  },
+  capture:{
+    backgroundColor:"#B9B9B9",
+    height:28,
+    width:28,
+    padding:28,
+    borderRadius:28,
+    alignSelf:"center",
+    position:"absolute",
+    bottom:"10%",
+    borderColor:"#464646",
+    borderWidth:6,
+  }
    
 });
 export default About

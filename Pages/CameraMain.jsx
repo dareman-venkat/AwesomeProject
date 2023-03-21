@@ -55,7 +55,10 @@ const[open,setopen]=useState(false);
             enableZoomGesture
           />
           {Cameraoverlay()}
+          <TouchableOpacity style={styles.capture}>
+          </TouchableOpacity>
         </View>
+        
       );
     } 
     else {
@@ -88,8 +91,8 @@ style={{
                    >
                       <Rect height="100%" width="100%" fill="#fff" />
                       <Rect
-                      x="18%"
-                      y="20%"
+                      x="16%"
+                      y="25%"
                       width="250"
                       height="250"
                       fill="black"
@@ -99,12 +102,12 @@ style={{
              <Rect
                height="100%"
                width="100%"
-               fill="rgba(0,0,0,0.8)"
+               fill="rgba(0,0,0,0.7)"
                mask="url(#mask)"
              />
              <Rect
-              x="18%"
-              y="20%"
+              x="16%"
+              y="25%"
               width="250"
               height="250"
               strokeWidth="5"
@@ -142,7 +145,7 @@ return(
       <View style={styles.subbody}>
         <TouchableOpacity
           style={styles.card}
-          onPress={() => navigation.navigate('BuyPage')}>
+          onPress={() => setopen(true)}>
           <View style={styles.imagecont}>
             <Image style={styles.img} source={require('../assests/buy.png')} />
           </View>
@@ -151,7 +154,7 @@ return(
             <Text style={styles.subTitlebar}>Scan to add product</Text>
           </View>
         </TouchableOpacity>
-        {renderCamera()}
+        {open && renderCamera()} 
       </View>
     </ImageBackground>
   );
@@ -176,6 +179,7 @@ const styles = StyleSheet.create({
     height: 140,
     marginBottom: 20,
     zIndex: 1,
+    margin:10
   },
   imagecont: {
     width: 90,
@@ -222,6 +226,19 @@ const styles = StyleSheet.create({
     //marginTop:20,
     justifyContent: 'center',
   },
+  capture:{
+    backgroundColor:"#B9B9B9",
+    height:28,
+    width:28,
+    padding:28,
+    borderRadius:28,
+    alignSelf:"center",
+    position:"absolute",
+    bottom:"10%",
+    borderColor:"#464646",
+    borderWidth:6
+
+  }
 });
 
 export default CameraMain;
