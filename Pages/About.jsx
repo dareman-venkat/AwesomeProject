@@ -3,7 +3,11 @@ import React from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Svg,Defs,Rect,Mask } from 'react-native-svg';
+import { RNCamera } from 'react-native-camera';
+import { useCamera } from 'react-native-camera-hooks';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
+import RNFS from 'react-native-fs'
+
 import { useState, useRef } from 'react';
 import MainPage from './MainPage';
 import Check from '../Pages/Check'
@@ -25,14 +29,19 @@ const profile = [
 
 const About = ({ navigation }) => {
 
+ //const [{cameraRef},{takePicture}] = useCamera(null);
+
   const[open,setopen]=useState(false);
+  const[imageSource,setImageSource]=useState(false);
+  let filepath;
+  let newfilepath;
 
   React.useEffect(() => {
     requestCameraPermission();
   }, []);
-  const camera = useRef(null)
+  const cameraRef = useRef(null)
   const devices = useCameraDevices();
-  const device = devices.back;
+  const device = devices.front;
 
   const requestCameraPermission = React.useCallback(async () => {
     const permission = await Camera.requestCameraPermission();
@@ -43,13 +52,45 @@ const About = ({ navigation }) => {
   
   const capturephoto = async() =>{
     console.log("entered ____>>>>")
-      const photo = await camera.current.takePhoto({
-        //enableAutoStabilization: true,
-        skipMetadata: true,
-        //photoCodec: 'jpeg',
-        quality: 85,
-      })
-      //console.log("camer worked",photo)
+      if(cameraRef.current!== null){
+        console.log("no issue");
+        const photo = await cameraRef.current.takePhoto({
+          qualityPrioritization: 'speed',
+          quality: 85,
+          enableAutoStabilization: true,
+          skipMetadata: true,
+          photoCodec: 'jpeg'
+        })
+        setImageSource(photo.path);
+         filepath = photo.path;
+         newfilepath = RNFS.ExternalDirectoryPath + '/Test.jpg'
+        RNFS.moveFile(filepath,newfilepath)
+        console.log("photo path",newfilepath)
+      }
+      else{
+        console.log("issue");
+      }
+  
+      console.log("camer worked",photo)
+
+  //  try{
+  //   const data = await takePicture();
+  //   console.log("data",data.uri);
+  //   const filepath = data.uri;
+  //   const newfilepath = RNFS.ExternalDirectoryPath + '/Test.jpg'
+  //   RNFS.moveFile(filepath,newfilepath)
+  //      .then( ()=>{
+  //         console.log('Image',filepath,"--to--",newfilepath);
+  //      })
+  //      .catch(error =>{
+  //       console.log("error this is ",error)
+  //      })
+  //  }
+  //  catch(err){
+  //   console.log("this is err",err)
+  //  }
+
+
   }
 
   function renderCamera() {
@@ -65,12 +106,17 @@ const About = ({ navigation }) => {
           }}>
           <Camera
            style={{flex:1}}
-            ref={camera}
+            ref={cameraRef}
             device={device}
             photo={true}
             isActive={true}
             enableZoomGesture
           />
+          {/* <RNCamera
+          ref={cameraRef}
+          type={RNCamera.Constants.Type.back}
+          style={{flex:1}}
+          /> */}
           {Cameraoverlay()}
           <TouchableOpacity onPress={capturephoto} style={styles.capture}/>
 
@@ -165,7 +211,8 @@ style={{
           <View style={styles.profilebox}>  
                <View style={styles.coverbox}>
                   <View style={styles.imagecont}>
-                    <Image style={styles.img} source={require("../assests/beard.png")}/>
+                    {/* <Image style={styles.img} source={require("../assests/beard.png")}/> */}
+                    <Image style={styles.img} source={{uri:`file:/${newfilepath}`}}/>
                   </View>
                   <TouchableOpacity onPress={() => setopen(true)} style={styles.edit}><Image style={{height:32,width:32}} source={require("../assests/cameraadd.png")}/></TouchableOpacity>
                   </View> 
