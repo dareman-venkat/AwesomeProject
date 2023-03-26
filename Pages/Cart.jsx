@@ -38,9 +38,28 @@ const Cart = ({navigation}) => {
           end={{x: 1, y: 0}}>
           <Text style={{fontSize: 19}}>2 items</Text>
         </LinearTextGradient>
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#E7B545',
+            padding: 10,
+            borderRadius: 5,
+            opacity: 0.8,
+            marginTop: 8,
+          }}>
+          <Text
+            style={{
+              textAlign: 'center',
+              fontSize: 16,
+              fontWeight: '600',
+              color: '#282120',
+            }}>
+            Proceed to Buy (2 items)
+          </Text>
+        </TouchableOpacity>
+
         <View
           style={{
-            paddingTop: 15,
+            paddingTop: 10,
             borderBottomColor: '#FFFFFF',
             borderBottomWidth: StyleSheet.hairlineWidth,
           }}
@@ -130,7 +149,90 @@ const Cart = ({navigation}) => {
               </View>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.cartitem}></TouchableOpacity>
+          <TouchableOpacity style={styles.cartitem}>
+            <View style={styles.leftbox}>
+              <Image
+                style={{
+                  height: '100%',
+                  width: '100%',
+                  borderTopLeftRadius: 6,
+                  borderBottomLeftRadius: 6,
+                  resizeMode: 'stretch',
+                }}
+                source={require('../assests/M16A4.jpg')}
+              />
+            </View>
+            <View style={styles.rightbox}>
+              <View style={styles.righttop}>
+                <Text
+                  style={{
+                    color: '#C5C5C5',
+                    fontSize: 16,
+                    fontWeight: '400',
+                    paddingBottom: 5,
+                  }}>
+                  M16A4 Machine Caliper
+                </Text>
+                <Text style={{color: '#FFFF', fontSize: 18, fontWeight: '500'}}>
+                  674.36 $
+                </Text>
+                <Text
+                  style={{
+                    color: '#93E396',
+                    fontSize: 16,
+                    fontWeight: '400',
+                    paddingTop: 5,
+                    paddingBottom: 5,
+                  }}>
+                  In stock
+                </Text>
+              </View>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  paddingTop: 5,
+                  //justifyContent: 'space-evenly',
+                }}>
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: '#E7B545',
+                    borderRadius: 5,
+                    padding: 7,
+                    width: 80,
+                    margin: 6,
+                  }}>
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontSize: 16,
+                      fontWeight: '600',
+                      textAlign: 'center',
+                    }}>
+                    Buy now
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: '#C5C5C5',
+                    borderRadius: 5,
+                    padding: 7,
+                    width: 80,
+                    margin: 6,
+                  }}>
+                  <Text
+                    style={{
+                      color: 'black',
+                      fontSize: 16,
+                      fontWeight: '600',
+                      textAlign: 'center',
+                    }}>
+                    Delete
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </TouchableOpacity>
           <View style={styles.bottombox}></View>
         </ScrollView>
       </View>
@@ -219,7 +321,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     //marginTop:20,
-    padding: 28,
+    padding: 25,
   },
   input: {
     width: '100%',
@@ -249,7 +351,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   cartbody: {
-    marginTop: 20,
+    marginTop: 0,
   },
   leftbox: {
     width: '37%',
