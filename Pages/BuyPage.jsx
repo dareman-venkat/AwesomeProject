@@ -51,9 +51,9 @@ console.log("hi",data)
            </View>
            </View>
            <View style={styles.downbox}>
-           <Text style={styles.txt} >Buy</Text>
+           <TouchableOpacity><Text style={styles.txt} >Buy</Text></TouchableOpacity>
            <Text  style={styles.txt}>|</Text>
-               <Text  style={styles.txt} >Add to Cart</Text> 
+           <TouchableOpacity><Text style={styles.txt} >Add to Cart</Text></TouchableOpacity>
            </View>
           </View>
           ))}

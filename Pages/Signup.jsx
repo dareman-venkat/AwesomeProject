@@ -13,7 +13,7 @@ export default function Signup({navigation}) {
 
 
 const error = [
-  { id: 1, message: "Username must not be shorter than 4 charcters"},
+  { id: 1, message: "Email must not be shorter than 4 charcters"},
   { id: 2, message: "Password must not be shorter than 6 charcters"},
   { id: 3, message: "Confirm Password must be same as Password"},
 ];
@@ -33,6 +33,7 @@ const onSubmit = ()=>{
     setuserstatus(false);
     setpassstatus(false);
     setcnfrmpassstatus(false);
+    
     navigation.navigate("Login");
     ToastAndroid.showWithGravity('Signed Up Sucessfully',
     ToastAndroid.SHORT,
@@ -52,7 +53,7 @@ const onSubmit = ()=>{
       <View style={styles.wholecont}>
           <View style={styles.innercont}>
           <View style={styles.inpbox}>
-             <TextInput style={styles.inputbox} placeholder=' Username ' placeholderTextColor="#5B5B5B" backgroundColor="#2B2A2A" onChangeText={newText => setUsername(newText)} value={username}  />
+             <TextInput style={styles.inputbox} placeholder=' Email ' placeholderTextColor="#5B5B5B" backgroundColor="#2B2A2A" onChangeText={newText => setUsername(newText)} value={username}  />
              <Text style={userstatus?{color:"#E7B539",position:"relative",padding:10}:{display:"none"}}>{userstatus?error[0].message:""}</Text>
              </View>
              <View style={styles.inpbox}>

@@ -16,6 +16,7 @@ import {RNCamera} from 'react-native-camera';
 import {useCamera} from 'react-native-camera-hooks';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import RNFS from 'react-native-fs';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {useState, useRef} from 'react';
 import MainPage from './MainPage';
@@ -44,6 +45,14 @@ const About = ({navigation}) => {
   );
   let filepath;
   let newfilepath;
+  const cleanstorage = ()=>{
+    const tokn =  AsyncStorage.getItem('token')
+    console.log("this is before token ++++++",tokn)
+     AsyncStorage.removeItem('token');
+    console.log("cleared")
+    console.log("This is tokern ++>>" ,tokn);
+    navigation.navigate('Login');
+  }
 
   React.useEffect(() => {
     requestCameraPermission();
@@ -84,6 +93,7 @@ const About = ({navigation}) => {
     }
 
     console.log('camer worked', photo);
+    
 
     //  try{
     //   const data = await takePicture();
@@ -235,8 +245,10 @@ const About = ({navigation}) => {
           <TouchableOpacity
             style={styles.card}
             onPress={() => {
-              prop.name == 'Logout'
-                ? navigation.navigate('Login')
+              prop.name == 'Logout'?
+              
+               cleanstorage()
+                // ? navigation.navigate('Login')
                 : prop.name == 'My Cart'
                 ? navigation.navigate('Cart')
                 : null;

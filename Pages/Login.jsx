@@ -1,7 +1,14 @@
 import { View, Text , ImageBackground, StyleSheet,Image,TextInput,TouchableOpacity,Pressable,KeyboardAvoidingView,Dimensions,ScrollView,ToastAndroid} from 'react-native'
-import React,{useState} from 'react'
+import React,{useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+//import AsyncStorage from '@react-native-community/async-storage';
+import { AuthContext } from '../AuthProvider';
+
+import axios from 'axios';
 
 export default function Login({navigation}) {
+ //const {setIsLoggedin} = useContext(AuthContext);
+
 
 const [username,setUsername]=useState("");
 const [password,setPassword]=useState("");
@@ -11,11 +18,13 @@ const[passwordstatus,setpassstatus]=useState(false);
 
 const error = [
   { id: 1, message: "BG checks" },
-  { id: 2, message: "Username must not be shorter than 4 charcters" },
+  { id: 2, message: "Email must not be shorter than 4 charcters" },
   { id: 3, message: "Password must not be shorter than 6 charcters" },
 ];
+const baseUrl = "http://192.168.1.127:5000";
 
 const onSubmit = ()=>{
+
  
   if (username.length < 4 || password.length <  6 )
   {
@@ -23,19 +32,57 @@ const onSubmit = ()=>{
      setpassstatus(true);
      
   }  
-  else if (username && password != null){
-    setUsername("");
-    setPassword("");
-    setuserstatus(false);
+  else if (username && password ){
+    // setUsername("");
+    // setPassword("");
+    setuserstatus(true);
      setpassstatus(false);
-    navigation.navigate("Mainpage")
-    ToastAndroid.showWithGravity('Logged in Sucessfully',
-    ToastAndroid.SHORT,
-    ToastAndroid.BOTTOM
-    )
+     const params = {
+      "email":username,
+      "password":password
+     } 
+     axios.post(`${baseUrl}/CustomerDetails/login`,params)
+     .then( async (res) => {
+       console.log("response",res.data)
+        
+       console.log("hi",res.data)
+       if (res.data.accesstoken){
+       await AsyncStorage.setItem('token',res.data.accesstoken)
+        navigation.navigate("Mainpage")
+        ToastAndroid.showWithGravity('Logged in Sucessfully',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM
+        )
+      
+      }
+        
+       else{
+        ToastAndroid.showWithGravity('Invalid Credentials ',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM
+        )
+       }
+       //setIsLoggedin(true)
+     }).catch((error)=>{console.log("this is error",error)})
+     ;
+    
+    
+    
   } 
 }
 console.log("check",userstatus)
+
+const cleanstorage = async()=>{
+  await AsyncStorage.removeItem('token');
+  console.log("cleared")
+  const tokn = await AsyncStorage.getItem('token')
+  console.log("This is tokern ++>>" ,tokn);
+
+}
+
+
+
+
   return (
 <KeyboardAvoidingView style={styles.keyboard} >
     <ImageBackground source={require('../assests/original.png')} style={styles.maincont} >
@@ -46,7 +93,7 @@ console.log("check",userstatus)
       <View style={styles.wholecont}>
           <View style={styles.innercont}>
             <View style={styles.inpbox}>
-             <TextInput style={styles.inputbox} placeholder=' Username ' placeholderTextColor="#5B5B5B" backgroundColor="#2B2A2A" onChangeText={newText => setUsername(newText)} value={username}  />
+             <TextInput style={styles.inputbox} placeholder=' Email ' placeholderTextColor="#5B5B5B" backgroundColor="#2B2A2A" onChangeText={newText => setUsername(newText)} value={username}  />
              <Text style={userstatus?{color:"#E7B539",position:"relative",padding:10}:{display:"none"}}>{userstatus?error[1].message:""}</Text>
              </View>
              <View style={styles.inpbox}>
@@ -63,7 +110,7 @@ console.log("check",userstatus)
       
       <View style={styles.bottomBox}>  
       <Text style={styles.dont}>Dont have an account?</Text>
-      <TouchableOpacity style={styles.signup} onPress={() => navigation.navigate("Signup")}>
+      <TouchableOpacity style={styles.signup} onPress={cleanstorage}>
                  <Text style={{color:"#AFAFAF",fontSize:14,fontWeight:"400",textDecorationLine:"underline"}}>Sign up now</Text> 
       </TouchableOpacity>
       </View> 
