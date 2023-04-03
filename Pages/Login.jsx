@@ -110,7 +110,7 @@ const cleanstorage = async()=>{
       
       <View style={styles.bottomBox}>  
       <Text style={styles.dont}>Dont have an account?</Text>
-      <TouchableOpacity style={styles.signup} onPress={cleanstorage}>
+      <TouchableOpacity style={styles.signup} onPress={()=>navigation.navigate("Signup")}>
                  <Text style={{color:"#AFAFAF",fontSize:14,fontWeight:"400",textDecorationLine:"underline"}}>Sign up now</Text> 
       </TouchableOpacity>
       </View> 

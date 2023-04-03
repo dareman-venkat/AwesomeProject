@@ -39,6 +39,7 @@ const Cart = ({navigation}) => {
           <Text style={{fontSize: 19}}>2 items</Text>
         </LinearTextGradient>
         <TouchableOpacity
+        onPress={()=>navigation.navigate("Billing")}
           style={{
             backgroundColor: '#E7B545',
             padding: 10,

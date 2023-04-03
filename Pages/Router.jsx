@@ -41,6 +41,10 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AuthContext  from '../AuthProvider';
+import Billing from './Billing';
+import Payment from './Payment';
+import Last from './Last';
+import Carddetails from './Carddetails';
 
 // type SectionProps = PropsWithChildren<{
 //   title: string;
@@ -123,6 +127,35 @@ function Router() {
               <Stack.Screen
                 name="Cart"
                 component={Cart}
+                options={{
+                  headerShown: false,
+                }}
+              /> 
+                <Stack.Screen
+                name="Billing"
+                component={Billing}
+                options={{
+                  headerShown: false,
+                }}
+              /> 
+               <Stack.Screen
+                name="Payment"
+                component={Payment}
+                options={{
+                  headerShown: false,
+                }}
+              /> 
+
+              <Stack.Screen
+                name="Carddetails"
+                component={Carddetails}
+                options={{
+                  headerShown: false,
+                }}
+              /> 
+               <Stack.Screen
+                name="Last"
+                component={Last}
                 options={{
                   headerShown: false,
                 }}
